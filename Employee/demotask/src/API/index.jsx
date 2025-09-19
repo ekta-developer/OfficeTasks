@@ -11,3 +11,7 @@ export const ddEmployeeAPI = async (data, config) => {
   const headers = createHeaders();
   return await axios.post(`${BASE_URL}get-emp-list`, data, headers);
 };
+export const dashboardDataAPI = async (data, config) => {
+  const headers = createHeaders();
+  return await axios.post(`${BASE_URL}dashboard`, data, headers);
+};

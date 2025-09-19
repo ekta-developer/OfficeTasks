@@ -29,10 +29,11 @@ body {
 }
 
 .form-control {
-  width: 320px;
-  border-radius: 50px;
-  padding: 12px 20px;
-  margin-bottom: 15px;
+  width: 320px !important;
+  border-radius: 50px !important;
+  padding: 12px 20px !important;
+  margin-top: 10px !important;
+  /* margin-bottom: 15px; */
 }
 
 .btn-login {
@@ -149,16 +150,17 @@ body {
 }
 
 .btn {
-  width: 100%;
-  max-width: 300px;
-  padding: 12px;
-  background: black;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
+  width: 100% !important;
+  max-width: 300px !important;
+  padding: 12px !important;
+  background: black !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 20px !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  margin-bottom: 20px !important;
+  margin-top: 10px !important;
 }
 
 .login-text {
@@ -202,3 +204,66 @@ body {
   color: #555;
   font-size: 15px;
 }
+/* Error message CSS starts here */
+.error-message {
+  color: red;
+  font-size: 0.875rem; /* smaller than input text */
+  margin-top: 1px;
+  display: block;
+  margin-left: 20px;
+  margin-bottom: 3px;
+}
+.is-invalid {
+  border-color: red;
+}
+
+/* Error message CSS starts here */
+/* Header.css */
+.header-fixed {
+  padding: 30px;
+}
+.custom-navbar {
+  position: fixed; /* Fix navbar on top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030; /* Above other content */
+  backdrop-filter: blur(10px); /* Glass blur effect */
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  transition: background-color 0.3s ease;
+}
+
+/* Navbar brand styling */
+.custom-navbar .navbar-brand .logo {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.custom-navbar .navbar-brand .brand-text {
+  font-size: 1.2rem;
+  color: #fff;
+  opacity: 0.8;
+}
+
+/* Nav links */
+.custom-navbar .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #00d1b2 !important; /* Accent color on hover */
+}
+
+/* Toggler button (mobile) */
+.custom-navbar .navbar-toggler {
+  border: none;
+}
+
+.custom-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/ %3E%3C/svg%3E");
+}
+
+/* Navbar or Headeer css ends here */

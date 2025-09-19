@@ -26,7 +26,6 @@ const LoginUser = () => {
         const status = res.data.status;
         if (status === true) {
           toast.success(res.data.message);
-          toast.clearWaitingQueue();
           localStorage.setItem("base_url", res.data?.data?.baseUrl);
           localStorage.setItem("authToken", res.data?.data?.token);
           localStorage.setItem(
@@ -35,13 +34,14 @@ const LoginUser = () => {
           );
           navigate("/dashboard");
         } else if (status === false) {
-          alert(res.data.message);
+          console.log(res.data.message,"iuiiuiiuiuiu");
+          toast.error(res.data.message);
         } else if (status === "expired") {
-          alert("Session expired");
+          toast.error("Session expired");
         }
       })
       .catch((err) => {
-        alert("Error: " + err.message);
+        toast.error("Error: " + err.message);
       });
   };
   const handleChange = (e) => {
@@ -67,29 +67,41 @@ const LoginUser = () => {
                 required: "This field is required",
               })}
               placeholder="Enter Company Code"
-              className="form-control-lg form-control"
+              className="form-control"
             />
             {errors.tenantId && (
-              <span className="invalid">{errors.tenantId.message}</span>
+              <div className="error-message">{errors.tenantId.message}</div>
             )}
           </div>
 
           <div className="mb-3">
-            {/* <input
+            <input
               type="email"
               placeholder="Enter Email"
-              className="form-control mt-2"
-              // {...register("email", { required: true })}
-            /> */}
+              className="form-control"
+              name="email"
+              id="default-02"
+              {...register("email", {
+                required: "This field is required",
+              })}
+            />
+            {errors.email && (
+              <div className="error-message">{errors.email.message}</div>
+            )}
           </div>
 
           <div className="mb-3">
-            {/* <input
+            <input
               type="password"
               placeholder="Password"
-              className="form-control large-input mt-2"
-              // {...register("password", { required: true })}
-            /> */}
+              className="form-control"
+              name="password"
+              id="default-03"
+              {...register("password", { required: "This field is required" })}
+            />
+            {errors.password && (
+              <div className="error-message">{errors.password.message}</div>
+            )}
           </div>
 
           <div className="form-submit">

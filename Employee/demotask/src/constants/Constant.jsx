@@ -1,0 +1,1 @@
+export const BASE_URL = "http://192.168.23.17:3002/api/"; //? Shweta

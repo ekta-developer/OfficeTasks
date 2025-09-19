@@ -15,3 +15,7 @@ export const dashboardDataAPI = async (data, config) => {
   const headers = createHeaders();
   return await axios.post(`${BASE_URL}dashboard`, data, headers);
 };
+export const TodayAttendanceAPI = async (data, config) => {
+  const headers = createHeaders();
+  return await axios.post(`${BASE_URL}today-attendance`, data, headers);
+};

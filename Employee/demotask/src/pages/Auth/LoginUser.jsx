@@ -67,7 +67,7 @@ const LoginUser = () => {
                 required: "This field is required",
               })}
               placeholder="Enter Company Code"
-              className="form-control"
+              className="form-control-login"
             />
             {errors.tenantId && (
               <div className="error-message">{errors.tenantId.message}</div>
@@ -78,7 +78,7 @@ const LoginUser = () => {
             <input
               type="email"
               placeholder="Enter Email"
-              className="form-control"
+              className="form-control-login"
               name="email"
               id="default-02"
               {...register("email", {
@@ -94,7 +94,7 @@ const LoginUser = () => {
             <input
               type="password"
               placeholder="Password"
-              className="form-control"
+              className="form-control-login"
               name="password"
               id="default-03"
               {...register("password", { required: "This field is required" })}

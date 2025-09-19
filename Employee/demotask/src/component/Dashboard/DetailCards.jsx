@@ -7,9 +7,9 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { Container } from "@mui/material";
 
-const DetailCards = ({ totalEmployee }) => {
+const DetailCards = ({ totalEmployee ,totalAttendance}) => {
   const [selectedCard, setSelectedCard] = useState(0);
-  const [totalAttendance, setTotalAttendance] = useState(5);
+//   const [totalAttendance, setTotalAttendance] = useState(5);
   const totalPresentPercent = (totalAttendance / totalEmployee) * 100;
   const totalAbsentPercent = 100 - totalPresentPercent;
   const cards = [

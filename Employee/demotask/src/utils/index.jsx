@@ -6,7 +6,6 @@ const getToken = () => {
   const token = localStorage.getItem("authToken");
   console.log(token, "YTYTYTYYTTTTYYTT token");
 
-  
   return localStorage.getItem("authToken");
 };
 
@@ -422,29 +421,20 @@ export function ValidateDocFile(file, callback) {
 
 const useLogout = () => {
   const navigate = useNavigate();
+console.log("LOGOUT calls");
 
   const logoutAction = (msg = null, role) => {
     // Clear localStorage
-    localStorage.removeItem("IMAGE_BASE_URL");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("sideBar");
+    localStorage.removeItem("base_url");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("userDetail");
-    localStorage.removeItem("studentFormNumber");
 
     // Show toast only if msg is provided
     if (msg) {
       toast.error(msg);
     }
-
     // Navigate based on role
-    if (role === "student") {
-      navigate("/student-login");
-    } else if (role === "nodal") {
-      navigate("/nodal-login");
-    } else {
-      // Default fallback if role is not recognized
-      navigate("/admin/auth-login");
-    }
+    navigate("/");
   };
 
   return logoutAction;

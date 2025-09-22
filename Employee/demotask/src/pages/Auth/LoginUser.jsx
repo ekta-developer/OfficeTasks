@@ -23,18 +23,28 @@ const LoginUser = () => {
 
     loginAPI(data)
       .then((res) => {
+        console.log("Full response:", res.data);
+
         const status = res.data.status;
         if (status === true) {
+          const baseUrl = res.data?.data?.baseUrl;
+          const token = res.data?.data?.token;
+          const user = res.data?.data?.user;
+
+          console.log("baseUrl:", baseUrl, "token:", token, "user:", user);
+
+          try {
+            localStorage.setItem("base_url", baseUrl);
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userDetail", JSON.stringify(user));
+          } catch (e) {
+            console.error("LocalStorage error:", e);
+          }
+
           toast.success(res.data.message);
-          localStorage.setItem("base_url", res.data?.data?.baseUrl);
-          localStorage.setItem("authToken", res.data?.data?.token);
-          localStorage.setItem(
-            "userDetail",
-            JSON.stringify(res.data?.data?.user)
-          );
           navigate("/dashboard");
         } else if (status === false) {
-          console.log(res.data.message,"iuiiuiiuiuiu");
+          console.log(res.data.message, "iuiiuiiuiuiu");
           toast.error(res.data.message);
         } else if (status === "expired") {
           toast.error("Session expired");

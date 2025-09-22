@@ -1,5 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { SlLogout } from "react-icons/sl";
+import useLogout from "../../utils";
+import logo from "../../assets/Images/logoQuaere.png";
 
 const Header = () => {
   return (
@@ -9,8 +12,8 @@ const Header = () => {
           <div className="container-fluid">
             {/* Logo */}
             <a className="navbar-brand text-light fw-bold" href="#">
-              <span className="logo">skye</span>
-              <span className="brand-text">·Bioscience</span>
+              <img src={logo} width={"70%"} height={"60px"} alt="logo" />
+              <span className="brand-text">-Attendance</span>
             </a>
 
             {/* Toggler for mobile */}
@@ -39,17 +42,17 @@ const Header = () => {
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-light" href="#">
-                    Pipeline
+                    About Us
                   </a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-light" href="#">
-                    Media & Investors
+                    Contact{" "}
                   </a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-light" href="#">
-                    Contact
+                    <SlLogout size={25} onClick={useLogout()} />
                   </a>
                 </li>
               </ul>

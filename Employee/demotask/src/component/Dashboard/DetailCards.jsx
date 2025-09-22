@@ -7,9 +7,9 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { Container } from "@mui/material";
 
-const DetailCards = ({ totalEmployee ,totalAttendance}) => {
+const DetailCards = ({ totalEmployee, totalAttendance }) => {
   const [selectedCard, setSelectedCard] = useState(0);
-//   const [totalAttendance, setTotalAttendance] = useState(5);
+  //   const [totalAttendance, setTotalAttendance] = useState(5);
   const totalPresentPercent = (totalAttendance / totalEmployee) * 100;
   const totalAbsentPercent = 100 - totalPresentPercent;
   const cards = [
@@ -41,7 +41,7 @@ const DetailCards = ({ totalEmployee ,totalAttendance}) => {
 
   return (
     <>
-      <Container maxWidth="fixed">
+      <Container maxWidth="fixed" sx={{px:4}}>
         <Box
           sx={{
             width: "100%",
@@ -60,6 +60,7 @@ const DetailCards = ({ totalEmployee ,totalAttendance}) => {
               <Card key={index} sx={{ position: "relative" }}>
                 {/* Number badge */}
                 <Box
+                 className="circle-box"
                   sx={{
                     position: "absolute",
                     top: 8,

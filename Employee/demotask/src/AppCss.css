@@ -254,7 +254,7 @@ body {
 }
 
 .custom-navbar .nav-link:hover {
-  color: #00d1b2 !important; /* Accent color on hover */
+  color: #5035b5 !important; /* Accent color on hover */
 }
 
 /* Toggler button (mobile) */
@@ -267,3 +267,7 @@ body {
 }
 
 /* Navbar or Headeer css ends here */
+.MuiContainer-root{
+  padding-right: 20px !important;
+  padding-left: 20px !important;
+}

@@ -26,6 +26,15 @@
     color: #555;
     font-size: 10px;
   }
+  /* for fixing box in the screen of tablet */
+  .MuiBox-root{
+    width: 94% !important;
+  }
+/*  */
+.circle-box{
+  width: 40px !important;
+  height: 40px !important;
+}
 }
 
 /* Medium devices (landscape tablets, 769px to 992px) */
@@ -36,6 +45,9 @@
 /* Large devices (desktops, 993px to 1200px) */
 @media only screen and (min-width: 993px) and (max-width: 1200px) {
   /* Styles for large screens */
+  .MuiCardContent-root{
+    padding: 28px !important;
+  }
 }
 
 /* Extra large devices (large desktops, 1201px and up) */

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createHeaders, createHeaderWithoutToken } from "../utils";
-import { BASE_URL } from "../constants/Constant";
+import { createFormHeaders, createHeaders, createHeaderWithoutToken } from "../utils";
+import { BASE_URL, BASE_URL_two } from "../constants/Constant";
 
 //verify mobile API
 export const loginAPI = async (data, config) => {
@@ -18,4 +18,9 @@ export const dashboardDataAPI = async (data, config) => {
 export const TodayAttendanceAPI = async (data, config) => {
   const headers = createHeaders();
   return await axios.post(`${BASE_URL}today-attendance`, data, headers);
+};
+
+export const RegisterEmployeeAPI = async (data, config) => {
+  const headers = createFormHeaders();
+  return await axios.post(`${BASE_URL_two}register`, data, headers);
 };

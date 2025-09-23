@@ -219,9 +219,9 @@ body {
 
 /* Error message CSS starts here */
 /* Header.css */
-.header-fixed {
+/* .header-fixed {
   padding: 30px;
-}
+} */
 .custom-navbar {
   position: fixed; /* Fix navbar on top */
   top: 0;
@@ -229,9 +229,11 @@ body {
   width: 100%;
   z-index: 1030; /* Above other content */
   backdrop-filter: blur(10px); /* Glass blur effect */
-  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  /* background-color: #000; /* Semi-transparent dark */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /*Slight shadow */
   transition: background-color 0.3s ease;
+  border-bottom: 0.5px solid #ddd;
+  color: #000;
 }
 
 /* Navbar brand styling */
@@ -247,27 +249,32 @@ body {
 }
 
 /* Nav links */
-.custom-navbar .nav-link {
+.nav-link {
+  font-size: 1rem; /* default size, can increase */
+  transition: all 0.2s ease-in-out; /* smooth effect */
+}
+
+.nav-link:hover {
+  color: #1976d2 !important; /* MUI blue */
+}
+.btn-logout {
+  background-color: #1976d2 !important;
   color: #fff !important;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  padding: 6px 20px !important;
+  font-size: 13px;
+  font-weight: 700;
 }
-
-.custom-navbar .nav-link:hover {
-  color: #5035b5 !important; /* Accent color on hover */
-}
-
 /* Toggler button (mobile) */
-.custom-navbar .navbar-toggler {
+.navbar-toggler {
   border: none;
 }
 
-.custom-navbar .navbar-toggler-icon {
+.navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/ %3E%3C/svg%3E");
 }
 
 /* Navbar or Headeer css ends here */
-.MuiContainer-root{
+.MuiContainer-root {
   padding-right: 20px !important;
   padding-left: 20px !important;
 }

@@ -41,13 +41,17 @@ const DetailCards = ({ totalEmployee, totalAttendance }) => {
 
   return (
     <>
-      <Container maxWidth="fixed" sx={{px:4}}>
+      <Container maxWidth="fixed" sx={{ px: 4 }}>
         <Box
           sx={{
             width: "100%",
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill, minmax(min(200px, 100%), 1fr))",
+            gridTemplateColumns: {
+              xs: "repeat(1, 1fr)", // mobile
+              sm: "repeat(2, 1fr)", // tablets
+              md: "repeat(2, 1fr)", // medium screens
+              lg: "repeat(4, 1fr)", // screens above 1024px
+            },
             gap: 2,
           }}
         >
@@ -60,7 +64,7 @@ const DetailCards = ({ totalEmployee, totalAttendance }) => {
               <Card key={index} sx={{ position: "relative" }}>
                 {/* Number badge */}
                 <Box
-                 className="circle-box"
+                  className="circle-box"
                   sx={{
                     position: "absolute",
                     top: 8,

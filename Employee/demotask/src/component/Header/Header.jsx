@@ -3,17 +3,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { SlLogout } from "react-icons/sl";
 import useLogout from "../../utils";
 import logo from "../../assets/Images/logoQuaere.png";
+import { Button } from "@mui/material";
 
 const Header = () => {
   return (
     <>
-      <div className="header-fixed">
-        <nav className="navbar navbar-expand-lg custom-navbar">
-          <div className="container-fluid">
+      <div className="sticky-top border-bottom mb-5">
+        <nav className="navbar navbar-expand-lg bg-light">
+          <div className="container">
             {/* Logo */}
             <a className="navbar-brand text-light fw-bold" href="#">
-              <img src={logo} width={"70%"} height={"60px"} alt="logo" />
-              <span className="brand-text">-Attendance</span>
+              <img src={logo} width={"auto"} height={"50px"} alt="logo" />
+              {/* <span className="brand-text" style={{color:"#ddd"}}>-Attendance</span> */}
             </a>
 
             {/* Toggler for mobile */}
@@ -35,25 +36,32 @@ const Header = () => {
               id="navbarNav"
             >
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <a className="nav-link text-light" href="#">
+                <li className="nav-item mx-2">
+                  <a className="nav-link " href="#">
                     Our Company
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link text-light" href="#">
+                <li className="nav-item mx-2">
+                  <a className="nav-link" href="#">
                     About Us
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link text-light" href="#">
+                <li className="nav-item mx-2">
+                  <a className="nav-link" href="#">
                     Contact{" "}
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link text-light" href="#">
-                    <SlLogout size={25} onClick={useLogout()} />
-                  </a>
+                <li className="nav-item mx-2">
+                  <Button
+                    variant="text"
+                    size="medium"
+                    className="btn-logout"
+                    sx={{ textTransform: "none" }} // keep both upper & lower case
+                    onClick={useLogout()}
+                  >
+                    <SlLogout size={15} />
+                    &nbsp; Logout
+                  </Button>
                 </li>
               </ul>
             </div>

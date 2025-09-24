@@ -23,16 +23,11 @@ const LoginUser = () => {
 
     loginAPI(data)
       .then((res) => {
-        console.log("Full response:", res.data);
-
         const status = res.data.status;
         if (status === true) {
           const baseUrl = res.data?.data?.baseUrl;
           const token = res.data?.data?.token;
           const user = res.data?.data?.user;
-
-          console.log("baseUrl:", baseUrl, "token:", token, "user:", user);
-
           try {
             localStorage.setItem("base_url", baseUrl);
             localStorage.setItem("authToken", token);
@@ -131,18 +126,18 @@ const LoginUser = () => {
       <div className="signup-right">
         <img src={img} alt="Illustration" className="illustration" />
         <h1>Your plan includes</h1>
-        <ul>
+        <ul className="listStyle">
           <li>
-            <h3>Unlimited projects and resources</h3>
+            <p>Unlimited projects and resources</p>
           </li>
           <li>
-            <h3>Unlimited templates</h3>
+            <p>Unlimited templates</p>
           </li>
           <li>
-            <h3>Unlimited storage</h3>
+            <p>Unlimited storage</p>
           </li>
           <li>
-            <h3>List, Board, and Calendar views…</h3>
+            <p>List, Board, and Calendar views…</p>
           </li>
         </ul>
       </div>

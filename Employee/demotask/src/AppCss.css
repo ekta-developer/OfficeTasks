@@ -138,6 +138,7 @@ body {
   color: #000;
   font-weight: 500;
   text-decoration: underline;
+  text-align: right;
 }
 
 .input-field {
@@ -177,7 +178,9 @@ body {
   width: 100%;
   max-width: 300px; /* match input width */
 }
-
+.listStyle{
+  list-style: none;
+}
 /* Right Side */
 .signup-right {
   flex: 1;

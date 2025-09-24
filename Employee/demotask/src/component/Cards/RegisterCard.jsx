@@ -82,17 +82,18 @@ const RegisterCard = ({ employeeData }) => {
     })
       .then((res) => {
         const status = res.data.status;
-        if (status === true) {
-          toast.success(res.data.message);
+        console.log(status, "JJJJJJstatus from api");
+
+        if (status === "Registered") {
+          toast.success("Face Uploaded Successfully!");
         } else if (status === false) {
-          toast.error(res.data.message);
+          toast.error(`${res.data.message} - No face found in uploaded image`);
         } else if (status === "expired") {
           toast.error("Session expired");
         }
-        
       })
       .catch((err) => {
-        toast.error("Error: " + err.message);
+        toast.error("Error: No face found in uploaded image");
       });
   };
 
@@ -100,17 +101,19 @@ const RegisterCard = ({ employeeData }) => {
     <>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography variant="h4" component="div">
+          <Typography variant="h5" component="div">
             Upload Face
           </Typography>
-          <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
+          <Typography
+            sx={{ color: "text.secondary", mb: 1.5, fontSize: "14px" }}
+          >
             All fields are required.
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent>
               <Grid container spacing={3}>
                 {/* Employee Select */}
-                <Grid size={5}>
+                <Grid size={{ xs: 12, md: 5, lg: 5 }}>
                   <Typography variant="subtitle1" gutterBottom>
                     Select Employee
                   </Typography>
@@ -147,7 +150,7 @@ const RegisterCard = ({ employeeData }) => {
                   />
                 </Grid>
                 {/* File Upload */}
-                <Grid item size={5}>
+                <Grid item size={{ xs: 12, md: 5, lg: 5 }}>
                   <Typography variant="subtitle1" gutterBottom>
                     Upload Document
                   </Typography>
@@ -319,12 +322,8 @@ const RegisterCard = ({ employeeData }) => {
                     </>
                   )}
                 </Grid>
-
                 {/* Submit */}
-                <Grid
-                  size="grow
-                      "
-                >
+                <Grid size="grow">
                   <Typography className="mt-4 p-1"></Typography>
                   <Button type="submit" variant="contained" color="primary">
                     Upload

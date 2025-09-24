@@ -6,19 +6,18 @@ import RegisterCard from "../../component/Cards/RegisterCard";
 import AttendanceTable from "../../component/Tables/AttendanceTable";
 
 const UserDashboard = () => {
-  const [data, setData] = useState();
-  const [totalAttendance, setTotalAttendance] = useState();
-  const [totalEmployee, setTotalEmployee] = useState();
+  const [employeeData, setEmployeeData] = useState();
+  const [attendanceData, setAttendanceData] = useState();
   useEffect(() => {
     classListDD();
-    TodayAttendance();
+    todayAttendanceData();
   }, []);
   const classListDD = () => {
     ddEmployeeAPI()
       .then((res) => {
         if (res.data.status === true) {
-          setData(res.data.data); // Directly set the array
-          setTotalEmployee(res.data.data.length); // ✅ update state
+          setEmployeeData(res.data.data); // Directly set the array
+
           // toast.success(res.data.message);
         } else if (res.data.status === false) {
           toast.error(res.data.message);
@@ -26,38 +25,44 @@ const UserDashboard = () => {
           toast.error(res.data.message);
           logout(null, "student");
         }
-        
       })
       .catch((err) => {
         console.log("catch", err);
       });
   };
 
-  const TodayAttendance = () => {
-    TodayAttendanceAPI().then((res) => {
-      if (res.data?.status === true) {
-        console.log(res.data, "TTTTTTTTTTTTTTTTTTTTTTTTTT");
-      } else if (res.data?.status === false) {
-        toast.error(res.data.message);
-      } else if (res.data.status === "expired") {
-        toast.error(res.data.message);
-      }
-    });
+  const todayAttendanceData = () => {
+    TodayAttendanceAPI()
+      .then((res) => {
+        console.log(res.data, "RESPONSE");
+
+        if (res.data.status === true) {
+          setAttendanceData(res.data.data); // Directly set the array
+          // toast.success(res.data.message);
+        } else if (res.data.status === false) {
+          toast.error(res.data.message);
+        } else if (res.data.status === "expired") {
+          toast.error(res.data.message);
+          logout(null, "student");
+        }
+      })
+      .catch((err) => {
+        console.log("catch", err);
+      });
   };
+
+  console.log(attendanceData, "TODAy attendfance");
 
   return (
     <>
       <div className="container-sm">
         <div className="section">
-          <DetailCards
-            totalEmployee={totalEmployee}
-            totalAttendance={totalAttendance}
-          />
+          <DetailCards data={attendanceData?.cardData} />
           <div className="p-3">
-            <RegisterCard employeeData={data} />
+            <RegisterCard employeeData={employeeData} />
           </div>
           <div className="p-3">
-            <AttendanceTable />
+            <AttendanceTable data={attendanceData?.TableData} />
           </div>
         </div>
       </div>

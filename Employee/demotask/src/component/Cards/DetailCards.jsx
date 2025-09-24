@@ -7,35 +7,32 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { Container } from "@mui/material";
 
-const DetailCards = ({ totalEmployee, totalAttendance }) => {
+const DetailCards = ({ data }) => {
   const [selectedCard, setSelectedCard] = useState(0);
-  //   const [totalAttendance, setTotalAttendance] = useState(5);
-  const totalPresentPercent = (totalAttendance / totalEmployee) * 100;
-  const totalAbsentPercent = 100 - totalPresentPercent;
   const cards = [
     {
       id: 1,
       title: "Employees",
-      description: "Since,2000",
-      total: totalEmployee,
+      description: "Total number of Employees.",
+      total: data?.totalEmployee,
     },
     {
       id: 2,
       title: "Total Attendance",
       description: "Total number of employees present today.",
-      total: totalAttendance,
+      total: data?.totalPresentEmp,
     },
     {
       id: 3,
       title: "Total Present %",
       description: "Total percentage of present employee.",
-      total: totalPresentPercent,
+      total: data?.totalPerPresentEmp,
     },
     {
       id: 4,
       title: "Total Absent %",
       description: "Total percentage of absent employee.",
-      total: totalAbsentPercent,
+      total: data?.totalPerAbsentEmp,
     },
   ];
 

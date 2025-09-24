@@ -25,23 +25,28 @@ const LoginUser = () => {
       .then((res) => {
         const status = res.data.status;
         if (status === true) {
+          const baseUrl = res.data?.data?.baseUrl;
+          const token = res.data?.data?.token;
+          const user = res.data?.data?.user;
+          try {
+            localStorage.setItem("base_url", baseUrl);
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userDetail", JSON.stringify(user));
+          } catch (e) {
+            console.error("LocalStorage error:", e);
+          }
+
           toast.success(res.data.message);
-          toast.clearWaitingQueue();
-          localStorage.setItem("base_url", res.data?.data?.baseUrl);
-          localStorage.setItem("authToken", res.data?.data?.token);
-          localStorage.setItem(
-            "userDetail",
-            JSON.stringify(res.data?.data?.user)
-          );
           navigate("/dashboard");
         } else if (status === false) {
-          alert(res.data.message);
+          console.log(res.data.message, "iuiiuiiuiuiu");
+          toast.error(res.data.message);
         } else if (status === "expired") {
-          alert("Session expired");
+          toast.error("Session expired");
         }
       })
       .catch((err) => {
-        alert("Error: " + err.message);
+        toast.error("Error: " + err.message);
       });
   };
   const handleChange = (e) => {
@@ -67,29 +72,41 @@ const LoginUser = () => {
                 required: "This field is required",
               })}
               placeholder="Enter Company Code"
-              className="form-control-lg form-control"
+              className="form-control-login"
             />
             {errors.tenantId && (
-              <span className="invalid">{errors.tenantId.message}</span>
+              <div className="error-message">{errors.tenantId.message}</div>
             )}
           </div>
 
           <div className="mb-3">
-            {/* <input
+            <input
               type="email"
               placeholder="Enter Email"
-              className="form-control mt-2"
-              // {...register("email", { required: true })}
-            /> */}
+              className="form-control-login"
+              name="email"
+              id="default-02"
+              {...register("email", {
+                required: "This field is required",
+              })}
+            />
+            {errors.email && (
+              <div className="error-message">{errors.email.message}</div>
+            )}
           </div>
 
           <div className="mb-3">
-            {/* <input
+            <input
               type="password"
               placeholder="Password"
-              className="form-control large-input mt-2"
-              // {...register("password", { required: true })}
-            /> */}
+              className="form-control-login"
+              name="password"
+              id="default-03"
+              {...register("password", { required: "This field is required" })}
+            />
+            {errors.password && (
+              <div className="error-message">{errors.password.message}</div>
+            )}
           </div>
 
           <div className="form-submit">
@@ -109,18 +126,18 @@ const LoginUser = () => {
       <div className="signup-right">
         <img src={img} alt="Illustration" className="illustration" />
         <h1>Your plan includes</h1>
-        <ul>
+        <ul className="listStyle">
           <li>
-            <h3>Unlimited projects and resources</h3>
+            <p>Unlimited projects and resources</p>
           </li>
           <li>
-            <h3>Unlimited templates</h3>
+            <p>Unlimited templates</p>
           </li>
           <li>
-            <h3>Unlimited storage</h3>
+            <p>Unlimited storage</p>
           </li>
           <li>
-            <h3>List, Board, and Calendar views…</h3>
+            <p>List, Board, and Calendar views…</p>
           </li>
         </ul>
       </div>

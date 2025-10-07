@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
+  CircularProgress,
   ClickAwayListener,
   Grid,
   List,
@@ -16,6 +17,25 @@ import {
   ListItemText,
 } from "@mui/material";
 import Webcam from "react-webcam";
+import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+
+// function to crop the image
+function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: "%",
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight
+    ),
+    mediaWidth,
+    mediaHeight
+  );
+}
 const RegisterCard = ({ employeeData }) => {
   const {
     register,
@@ -26,6 +46,7 @@ const RegisterCard = ({ employeeData }) => {
     control,
     trigger,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -35,8 +56,16 @@ const RegisterCard = ({ employeeData }) => {
   });
   const [showOptions, setShowOptions] = useState(false);
   const [uploadMethod, setUploadMethod] = useState("");
+  const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null); // 👈 stores preview image
+  const [refreshKey, setRefreshKey] = useState(0); // 👈 used to refresh the upload field
   const webcamRef = useRef(null);
+  const imgRef = useRef(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [crop, setCrop] = useState();
+  const [completedCrop, setCompletedCrop] = useState(null);
+  const [aspect, setAspect] = useState(undefined); // free crop (no fixed aspect)
 
   // Modified capture with preview
   const capture = useCallback(async () => {
@@ -53,49 +82,120 @@ const RegisterCard = ({ employeeData }) => {
 
       // Store preview
       setPreview(imageSrc);
+      // store cropped image
+      setShowCropper(true);
     }
   }, [webcamRef, setValue, clearErrors]);
 
   // Reset back to initial fake input
+
+  // reset to initial input
   const handleBack = () => {
     setUploadMethod("");
     setShowOptions(false);
-    setPreview(null); // reset preview also
-    setValue("file", null, { shouldValidate: true }); // reset file field
+    setPreview(null);
+    setValue("file", null, { shouldValidate: true });
+    setShowCropper(false);
+    setCroppedImage(null);
   };
+  const onSubmit = async (data) => {
+    setLoading(true);
 
-  const onSubmit = (data) => {
-    console.log(data, "Form Data");
+    try {
+      // Prepare FormData
+      const formData = new FormData();
+      formData.append("employeeId", data?.employeeId?.value);
+      formData.append("name", data?.employeeId?.label);
+      if (data.file) {
+        formData.append("file", data.file[0]);
+      }
 
-    // Create FormData instance
-    const formData = new FormData();
-    formData.append("employeeId", data?.employeeId?.value);
-    formData.append("name", data?.employeeId?.label);
-    if (data.file) {
-      formData.append("file", data.file[0]); // send binary file
-    }
-
-    RegisterEmployeeAPI(formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((res) => {
-        const status = res.data.status;
-        console.log(status, "JJJJJJstatus from api");
-
-        if (status === "Registered") {
-          toast.success("Face Uploaded Successfully!");
-        } else if (status === false) {
-          toast.error(`${res.data.message} - No face found in uploaded image`);
-        } else if (status === "expired") {
-          toast.error("Session expired");
-        }
-      })
-      .catch((err) => {
-        toast.error("Error: No face found in uploaded image");
+      const res = await RegisterEmployeeAPI(formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
+      const status = res.data.status;
+
+      // ✅ Handle success/failure cases
+      if (status === "Registered") {
+        toast.success("Face Uploaded Successfully!");
+      } else if (status === false) {
+        toast.error(`${res.data.message} - No face found in uploaded image`);
+      } else if (status === "expired") {
+        toast.error("Session expired");
+      } else {
+        toast.error("Unexpected response from server");
+      }
+    } catch (err) {
+      console.log(err, "OPOPOOPPOPOPO");
+
+      toast.error("Error: No face found in uploaded image");
+    } finally {
+      // ✅ Always reset UI after API call — success OR error
+      reset();
+      setPreview(null);
+      setUploadMethod(null);
+      setShowOptions(false);
+      setRefreshKey((prev) => prev + 1);
+      setLoading(false);
+      setShowCropper(false);
+      setCroppedImage(null);
+      setCrop(null);
+      setCompletedCrop(null);
+    }
   };
+  // when image selected from device
+  const onSelectFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setPreview(URL.createObjectURL(file));
+    setShowCropper(true);
+  };
+
+  const onImageLoad = (e) => {
+    const { width, height } = e.currentTarget;
+    setCrop(centerAspectCrop(width, height, aspect || 16 / 9));
+  };
+
+  const getCroppedImg = useCallback(async () => {
+    if (!imgRef.current || !completedCrop) return;
+
+    const canvas = document.createElement("canvas");
+    const scaleX = imgRef.current.naturalWidth / imgRef.current.width;
+    const scaleY = imgRef.current.naturalHeight / imgRef.current.height;
+    canvas.width = completedCrop.width;
+    canvas.height = completedCrop.height;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+      imgRef.current,
+      completedCrop.x * scaleX,
+      completedCrop.y * scaleY,
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY,
+      0,
+      0,
+      completedCrop.width,
+      completedCrop.height
+    );
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const croppedUrl = URL.createObjectURL(blob);
+        setCroppedImage(croppedUrl);
+
+        const file = new File([blob], "cropped.jpg", { type: "image/jpeg" });
+        setValue("file", [file], { shouldValidate: true });
+        clearErrors("file");
+
+        setShowCropper(false);
+        setPreview(null);
+        resolve();
+      }, "image/jpeg");
+    });
+  }, [completedCrop, clearErrors, setValue]);
 
   return (
     <>
@@ -150,7 +250,7 @@ const RegisterCard = ({ employeeData }) => {
                   />
                 </Grid>
                 {/* File Upload */}
-                <Grid item size={{ xs: 12, md: 5, lg: 5 }}>
+                <Grid item size={{ xs: 12, md: 5, lg: 5 }} key={refreshKey}>
                   <Typography variant="subtitle1" gutterBottom>
                     Upload Document
                   </Typography>
@@ -169,7 +269,7 @@ const RegisterCard = ({ employeeData }) => {
                     />
                   )}
 
-                  {/* Show error */}
+                  {/* Error */}
                   {errors.file && (
                     <Typography color="error" variant="body2">
                       {errors.file.message}
@@ -200,7 +300,6 @@ const RegisterCard = ({ employeeData }) => {
                         >
                           <ListItemText primary="Upload from Device" />
                         </ListItemButton>
-
                         <ListItemButton
                           onClick={() => {
                             setUploadMethod("camera");
@@ -214,83 +313,135 @@ const RegisterCard = ({ employeeData }) => {
                   )}
 
                   {/* Device upload */}
-                  {uploadMethod === "device" && (
-                    <>
+                  {/* Upload from Device */}
+                  {uploadMethod === "device" &&
+                    !showCropper &&
+                    !croppedImage && (
                       <Input
                         type="file"
-                        accept="image/jpeg,image/jpg"
-                        {...register("file", {
-                          required: "This field is required",
-                          validate: (fileList) => {
-                            if (!fileList || fileList.length === 0)
-                              return "File is required";
-                            const file = fileList[0];
-                            const validTypes = ["image/jpeg", "image/jpg"];
-                            return (
-                              validTypes.includes(file.type) ||
-                              "Only JPG/JPEG files are allowed"
-                            );
-                          },
-                        })}
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            setValue("file", e.target.files, {
-                              shouldValidate: true,
-                            });
-                            clearErrors("file");
-                            setPreview(URL.createObjectURL(file));
-                          }
-                        }}
+                        accept="image/jpeg,image/jpg,image/png"
+                        onChange={onSelectFile}
                         fullWidth
                       />
-                      {preview && (
+                    )}
+
+                  {/* Cropper Section */}
+                  {showCropper && preview && (
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        height: 400,
+                      }}
+                    >
+                      <ReactCrop
+                        crop={crop}
+                        onChange={(_, percentCrop) => setCrop(percentCrop)}
+                        onComplete={(c) => setCompletedCrop(c)}
+                        aspect={aspect} // undefined = free crop
+                      >
                         <img
+                          ref={imgRef}
                           src={preview}
-                          alt="Preview"
+                          alt="Crop"
+                          onLoad={onImageLoad}
                           style={{
-                            marginTop: "10px",
                             maxWidth: "100%",
-                            borderRadius: "8px",
+                            maxHeight: "400px",
+                            objectFit: "contain",
                           }}
                         />
-                      )}
-                      <Button
-                        variant="outlined"
-                        onClick={handleBack}
-                        sx={{ mt: 1 }}
+                      </ReactCrop>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "0px",
+                          gap: "10px",
+                        }}
                       >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={getCroppedImg}
+                          disabled={
+                            !completedCrop?.width || !completedCrop?.height
+                          }
+                        >
+                          Crop & Save
+                        </Button>
+                        <Button variant="outlined" onClick={handleBack}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Cropped Image (Optional Preview) */}
+                  {croppedImage && (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={croppedImage}
+                        alt="Cropped"
+                        style={{
+                          width: "40%",
+                          borderRadius: "8px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <Button variant="outlined" onClick={handleBack}>
                         Back
                       </Button>
-                    </>
+                    </div>
                   )}
 
                   {/* Camera capture */}
                   {uploadMethod === "camera" && (
-                    <>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
                       {!preview ? (
                         <>
                           <Webcam
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat="image/jpeg"
-                            width="100%"
+                            width="40%"
+                            style={{
+                              borderRadius: "8px",
+                              marginBottom: "10px",
+                            }}
                           />
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={capture}
-                            sx={{ mt: 1, mr: 1 }}
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              gap: "10px",
+                            }}
                           >
-                            Capture
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            onClick={handleBack}
-                            sx={{ mt: 1 }}
-                          >
-                            Back
-                          </Button>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={capture}
+                            >
+                              Capture
+                            </Button>
+                            <Button variant="outlined" onClick={handleBack}>
+                              Back
+                            </Button>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -299,34 +450,49 @@ const RegisterCard = ({ employeeData }) => {
                             alt="Captured Preview"
                             style={{
                               marginTop: "10px",
+                              width: "40%",
                               maxWidth: "100%",
                               borderRadius: "8px",
+                              marginBottom: "10px",
                             }}
                           />
-                          <Button
-                            variant="outlined"
-                            onClick={() => setPreview(null)}
-                            sx={{ mt: 1, mr: 1 }}
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              gap: "10px",
+                            }}
                           >
-                            Retake
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            onClick={handleBack}
-                            sx={{ mt: 1 }}
-                          >
-                            Back
-                          </Button>
+                            <Button
+                              variant="outlined"
+                              onClick={() => setPreview(null)}
+                            >
+                              Retake
+                            </Button>
+                            <Button variant="outlined" onClick={handleBack}>
+                              Back
+                            </Button>
+                          </div>
                         </>
                       )}
-                    </>
+                    </div>
                   )}
                 </Grid>
                 {/* Submit */}
                 <Grid size="grow">
                   <Typography className="mt-4 p-1"></Typography>
-                  <Button type="submit" variant="contained" color="primary">
-                    Upload
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={loading}
+                    startIcon={
+                      loading ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : null
+                    }
+                  >
+                    {loading ? "Uploading..." : "Upload"}
                   </Button>
                 </Grid>
               </Grid>

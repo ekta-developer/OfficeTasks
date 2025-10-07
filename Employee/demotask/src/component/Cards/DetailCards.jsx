@@ -7,14 +7,14 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { Container } from "@mui/material";
 
-const DetailCards = ({ data }) => {
+const DetailCards = ({ data , totalEmp}) => {
   const [selectedCard, setSelectedCard] = useState(0);
   const cards = [
     {
       id: 1,
       title: "Employees",
       description: "Total number of Employees.",
-      total: data?.totalEmployee,
+      total: data?.totalEmployee || totalEmp?.length,
     },
     {
       id: 2,

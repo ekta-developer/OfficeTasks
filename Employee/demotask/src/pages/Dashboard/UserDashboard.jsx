@@ -39,7 +39,7 @@ const UserDashboard = () => {
         } else if (res.data.status === false) {
           // toast.error(res.data.message);
         } else if (res.data.status === "expired") {
-          toast.error(res.data.message);
+          // toast.error(res.data.message);
           logout(null, "student");
         }
       })
@@ -54,7 +54,7 @@ const UserDashboard = () => {
     <>
       <div className="container-sm">
         <div className="section">
-          <DetailCards data={attendanceData?.cardData} />
+          <DetailCards data={attendanceData?.cardData} totalEmp={employeeData} />
           <div className="p-3">
             <RegisterCard employeeData={employeeData} />
           </div>

@@ -138,14 +138,31 @@ const AttendanceTable = ({ data }) => {
                 ).map((row) => (
                   <StyledTableRow key={row.employeeId}>
                     <TableCell component="th" scope="row">
-                      {row.employeeId}
+                      {row.empCode}
                     </TableCell>
                     <TableCell align="left">{row.employeeName}</TableCell>
                     <TableCell align="right">
                       {row.check_in_time ? "Present" : "Absent"}
                     </TableCell>
-                    <TableCell align="right">{row.check_in_time}</TableCell>
-                    <TableCell align="right">{row.check_out_time}</TableCell>
+                    <TableCell align="right">
+                      {row.check_in_time
+                        ? `${row.check_in_time} ${
+                            parseInt(row.check_in_time.split(":")[0], 10) >= 12
+                              ? "PM"
+                              : "AM"
+                          }`
+                        : "--"}
+                    </TableCell>
+
+                    <TableCell align="right">
+                      {row.check_out_time
+                        ? `${row.check_out_time} ${
+                            parseInt(row.check_out_time.split(":")[0], 10) >= 12
+                              ? "PM"
+                              : "AM"
+                          }`
+                        : "--"}
+                    </TableCell>
                   </StyledTableRow>
                 ))
               ) : (

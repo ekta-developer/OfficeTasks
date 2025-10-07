@@ -63,7 +63,7 @@ const LoginUser = () => {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-3">
+          <div className="mb-1">
             <input
               type="text"
               name="tenantId"
@@ -79,7 +79,7 @@ const LoginUser = () => {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-1">
             <input
               type="email"
               placeholder="Enter Email"
@@ -95,7 +95,7 @@ const LoginUser = () => {
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-1">
             <input
               type="password"
               placeholder="Password"

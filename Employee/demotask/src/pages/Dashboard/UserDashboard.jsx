@@ -17,10 +17,9 @@ const UserDashboard = () => {
       .then((res) => {
         if (res.data.status === true) {
           setEmployeeData(res.data.data); // Directly set the array
-
           // toast.success(res.data.message);
         } else if (res.data.status === false) {
-          toast.error(res.data.message);
+          // toast.error(res.data.message);
         } else if (res.data.status === "expired") {
           toast.error(res.data.message);
           logout(null, "student");
@@ -34,13 +33,11 @@ const UserDashboard = () => {
   const todayAttendanceData = () => {
     TodayAttendanceAPI()
       .then((res) => {
-        console.log(res.data, "RESPONSE");
-
         if (res.data.status === true) {
           setAttendanceData(res.data.data); // Directly set the array
           // toast.success(res.data.message);
         } else if (res.data.status === false) {
-          toast.error(res.data.message);
+          // toast.error(res.data.message);
         } else if (res.data.status === "expired") {
           toast.error(res.data.message);
           logout(null, "student");

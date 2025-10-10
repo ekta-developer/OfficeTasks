@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import img from "../../assets/images/Moneyverse Home Office.png";
+import logo from "../../assets/Images/logoQuaere.png";
 import { useForm } from "react-hook-form";
 import { loginAPI } from "../../API";
+import gif from "../../assets/Images/face-scan.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginUser = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     watch,
@@ -52,11 +56,18 @@ const LoginUser = () => {
   const handleChange = (e) => {
     console.log(e.target.value);
   };
+
   return (
     <div className="signup-container">
       <div className="signup-left">
-        <div className="circle"></div>
-        <h1>Sign in</h1>
+        {/* <div className="circle"></div> */}
+        {/* <img
+          src={signIn}
+          style={{ height: "20%", width: "15%" }}
+          alt="Office"
+          className="office-image"
+        /> */}
+        <h1 style={{ color: "#005597" }}>Sign in</h1>
         <p>
           By signing in, you agree to the <a href="#">Terms of use</a> and{" "}
           <a href="#">Privacy Policy</a>.
@@ -95,39 +106,68 @@ const LoginUser = () => {
             )}
           </div>
 
-          <div className="mb-1">
+          <div className="mb-1" style={{ position: "relative" }}>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               className="form-control-login"
               name="password"
               id="default-03"
               {...register("password", { required: "This field is required" })}
             />
+
+            {/* Eye Icon */}
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              style={{
+                position: "absolute",
+                right: "25px",
+                top: "55%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+              }}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+
             {errors.password && (
               <div className="error-message">{errors.password.message}</div>
             )}
           </div>
 
-          <div className="form-submit">
+          <div className="form-submit mb-2">
             <button type="submit" className="btn">
               Sign in
             </button>
-            <p className="login-text">
-              Don’t have an account? <a href="#">Sign up</a>
-            </p>
+            <a href="#" className="forgot-link text-center">
+              Forgot Password?
+            </a>
           </div>
-          <a href="#" className="forgot-link">
-            Forgot Password?
-          </a>
+
+          <p className="login-text">
+            Don’t have an account? <a href="#">Sign up</a>
+          </p>
         </form>
       </div>
 
       <div className="signup-right">
-        <img src={img} alt="Illustration" className="illustration" />
-        <h1>Your plan includes</h1>
+        <img
+          src={logo}
+          style={{ height: "auto", width: "30%" }}
+          alt="Office"
+          className="office-image"
+        />
+        <h3 className="certer-text" style={{ color: "black" }}>
+          Attendance Management System
+        </h3>
+
+        <img src={gif} alt="Illustration" className="illustration" />
         <ul className="listStyle">
-          <li>
+          {/* <li>
             <p>Unlimited projects and resources</p>
           </li>
           <li>
@@ -138,7 +178,7 @@ const LoginUser = () => {
           </li>
           <li>
             <p>List, Board, and Calendar views…</p>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

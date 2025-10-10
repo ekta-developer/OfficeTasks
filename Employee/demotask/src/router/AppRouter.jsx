@@ -11,7 +11,6 @@ import LayoutUser from "../layout/LayoutUser";
 
 const AppRouter = () => {
   // const isAuthenticated = /* Get authentication status from AuthContext */
-
   return (
     <Router>
       <Routes>

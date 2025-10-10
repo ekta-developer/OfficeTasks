@@ -108,6 +108,7 @@ body {
 .signup-left {
   flex: 1;
   display: flex;
+  background-color: #FAFAFA;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -154,7 +155,7 @@ body {
   width: 100% !important;
   max-width: 300px !important;
   padding: 12px !important;
-  background: black !important;
+  background: #005597 !important;
   color: white !important;
   border: none !important;
   border-radius: 20px !important;
@@ -184,7 +185,7 @@ body {
 /* Right Side */
 .signup-right {
   flex: 1;
-  background: #f9fafc;
+  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;

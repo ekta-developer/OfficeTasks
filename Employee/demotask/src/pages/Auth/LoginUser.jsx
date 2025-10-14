@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { loginAPI } from "../../API";
 import gif from "../../assets/Images/face-scan.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import svg from "../../assets/Images/New folder (2)/face-3.svg";
 const LoginUser = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +67,15 @@ const LoginUser = () => {
           alt="Office"
           className="office-image"
         /> */}
-        <h1 style={{ color: "#005597" }}>Sign in</h1>
+         <div className="mb-3 text-center">
+            <img
+          src={logo}
+          style={{ height: "auto", width: "30%" }}
+          alt="Office"
+          className="office-image"
+        />
+         </div>
+        {/* <h3 style={{ color: "#005597" }}>Sign in</h3> */}
         <p>
           By signing in, you agree to the <a href="#">Terms of use</a> and{" "}
           <a href="#">Privacy Policy</a>.
@@ -155,17 +163,15 @@ const LoginUser = () => {
       </div>
 
       <div className="signup-right">
-        <img
-          src={logo}
-          style={{ height: "auto", width: "30%" }}
-          alt="Office"
-          className="office-image"
-        />
-        <h3 className="certer-text" style={{ color: "black" }}>
+     
+
+        <img src={svg} alt="Illustration" className="illustration" />
+        <h3
+          className="certer-text"
+          style={{ color: "#005597", fontFamily: "cursive" }}
+        >
           Attendance Management System
         </h3>
-
-        <img src={gif} alt="Illustration" className="illustration" />
         <ul className="listStyle">
           {/* <li>
             <p>Unlimited projects and resources</p>

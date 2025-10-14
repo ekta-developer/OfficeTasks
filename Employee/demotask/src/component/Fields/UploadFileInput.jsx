@@ -222,10 +222,10 @@ const UploadFileInput = ({
                       maxHeight: "80px",
                       objectFit: "cover",
                       cursor: "pointer",
-                      border:
-                        fields?.includes(name) && status
-                          ? "1px solid red"
-                          : "none",
+                      // border:
+                      //   fields?.includes(name) && status
+                      //     ? "1px solid red"
+                      //     : "none",
                     }}
                     onClick={() => handleImageClick(0, file, label || image)}
                   />
